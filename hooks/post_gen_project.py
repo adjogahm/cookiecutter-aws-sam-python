@@ -1,7 +1,5 @@
 """
-    Given that this cookiecutter will run to scaffold a Python
-    Lambda project and the user may not want to use the Makefile
-    so we will remove it if that's the case.
+    Sample Hook to provide helpful message that project generated successfully.
 """
 
 from __future__ import print_function
@@ -15,7 +13,7 @@ HINT = "\x1b[3;33m"
 
 
 def remove_optional_files():
-    filenames = ["Makefile"]
+    filenames = ["event.json"]
     for file in filenames:
         if os.path.isfile(file):
             print(INFO + "Removing {} from project due to chosen options...".
@@ -28,8 +26,9 @@ def remove_optional_files():
 def main():
 
     project_name = '{{ cookiecutter.project_name }}'
-    makefile_choice = '{{ cookiecutter.include_experimental_make }}'.lower()
-    if makefile_choice == 'n':
+    apigw_choice = '{{ cookiecutter.include_apigw }}'.lower()
+
+    if apigw_choice == 'n':
         remove_optional_files()
 
     print(SUCCESS +

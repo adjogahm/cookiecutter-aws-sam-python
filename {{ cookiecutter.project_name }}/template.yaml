@@ -48,6 +48,7 @@ Resources:
       # Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
       #     Variables:
       #         PARAM1: VALUE
+
 {% if cookiecutter.include_safe_deployment == "y" %}
   LiveAliasErrorMetricGreaterThanZeroAlarm:
     Type: "AWS::CloudWatch::Alarm"
@@ -69,20 +70,20 @@ Resources:
 {%- endif %}
 
 {% if cookiecutter.include_implicitrolepolicy == "y"%}
-    # Adds IAM Policy to Lambda function IAM Role that is generated implicitly
-    # FirstFunctionAdditionalPermission:
-    #     Type: "AWS::IAM::Policy"
-    #     Properties:
-    #         PolicyName: "ParameterStoreSample"
-    #         PolicyDocument:
-    #             Version: "2012-10-17"
-    #             Statement:
-    #                 -
-    #                     Effect: "Allow"
-    #                     Action: "ssm:GetParameters"
-    #                     Resource: "*"
-    #         Roles:
-    #             - !Ref FirstFunctionRole # Sample policy to demonstrate Implicit IAM Role created with SAM
+  # Adds IAM Policy to Lambda function IAM Role that is generated implicitly
+  FirstFunctionAdditionalPermission:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "ParameterStoreSample"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action: "ssm:GetParameters"
+            Resource: "*"
+      Roles:
+        - !Ref FirstFunctionRole # Sample policy to demonstrate Implicit IAM Role created with SAM
 {%- endif %}
 
 Outputs:

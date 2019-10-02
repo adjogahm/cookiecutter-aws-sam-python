@@ -69,7 +69,7 @@ Resources:
       TreatMissingData: notBreaching
 {%- endif %}
 
-{% if cookiecutter.include_implicitrolepolicy == "y"%}
+{% if cookiecutter.include_implicit_role_policy == "y"%}
   # Adds IAM Policy to Lambda function IAM Role that is generated implicitly
   FirstFunctionAdditionalPermission:
     Type: "AWS::IAM::Policy"
@@ -100,7 +100,7 @@ Outputs:
     Description: "FirstFunction Lambda Function ARN"
     Value: !GetAtt FirstFunction.Arn
 
-{% if cookiecutter.include_implicitrolepolicy == "y"%}
+{% if cookiecutter.include_implicit_role_policy == "y"%}
   FirstFunctionIamRole:
     Description: "Implicit IAM Role created for FirstFunction function"
     Value: !GetAtt FirstFunctionRole.Arn

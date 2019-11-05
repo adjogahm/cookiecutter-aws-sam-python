@@ -11,17 +11,17 @@ Globals:
 {%- if cookiecutter.include_safe_deployment == "y" %}
     AutoPublishAlias: live # More info about Safe Deployments: https://github.com/awslabs/serverless-application-model/blob/master/docs/safe_lambda_deployments.rst
     DeploymentPreference:
-      Type: Linear10PercentEvery1Minute 
+      Type: Linear10PercentEvery1Minute
       Alarms:
         # Rollback deployment if any of the following CloudWatch alarms breach 
         - !Ref LiveAliasErrorMetricGreaterThanZeroAlarm
 {% endif %}
 
 Resources:
-  FirstFunction:
+  {{ cookiecutter.function_name }}:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: first_function
+      CodeUri: {{ cookiecutter.function_name|lower }}
       Handler: app.lambda_handler
       Runtime: python3.7
 {%- if cookiecutter.include_xray == "y" %}
@@ -32,7 +32,7 @@ Resources:
         CatchAll:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /first/{any_argument+}
+            Path: /{{ cookiecutter.function_name|lower }}/{any_argument+}
             Method: any
 {% endif %}
       # Policies: # Example inline policy
@@ -54,9 +54,9 @@ Resources:
       ComparisonOperator: GreaterThanThreshold
       Dimensions:
         - Name: Resource
-          Value: !Sub "${FirstFunction}:live"
+          Value: !Sub "${{{ cookiecutter.function_name }}}:live"
         - Name: FunctionName
-          Value: !Ref FirstFunction
+          Value: !Ref {{ cookiecutter.function_name }}
       EvaluationPeriods: 1
       MetricName: Errors
       Namespace: AWS/Lambda
@@ -67,7 +67,7 @@ Resources:
 {%- endif %}
 {% if cookiecutter.include_implicit_role_policy == "y"%}
   # Adds IAM Policy to Lambda function IAM Role that is generated implicitly
-  FirstFunctionAdditionalPermission:
+  {{ cookiecutter.function_name }}AdditionalPermission:
     Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: "ParameterStoreSample"
@@ -79,7 +79,7 @@ Resources:
             Action: "ssm:GetParameters"
             Resource: "*"
       Roles:
-        - !Ref FirstFunctionRole # Sample policy to demonstrate Implicit IAM Role created with SAM
+        - !Ref {{ cookiecutter.function_name|lower }}Role # Sample policy to demonstrate Implicit IAM Role created with SAM
 {%- endif %}
 
 Outputs:
@@ -87,15 +87,15 @@ Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  FirstApiGatewayURL:
+  {{ cookiecutter.function_name }}ApiGatewayURL:
     Description: "API Gateway endpoint URL for Prod environment for FirstFunction function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/first/argument"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/{{ cookiecutter.function_name|lower }}/argument"
 {%- endif %}
-  FirstFunction:
-    Description: "FirstFunction Lambda Function ARN"
-    Value: !GetAtt FirstFunction.Arn
+{{ cookiecutter.function_name|lower }}:
+    Description: "{{ cookiecutter.function_name|lower }} Lambda Function ARN"
+    Value: !GetAtt {{ cookiecutter.function_name|lower }}.Arn
 {% if cookiecutter.include_implicit_role_policy == "y"%}
-  FirstFunctionIamRole:
-    Description: "Implicit IAM Role created for FirstFunction function"
-    Value: !GetAtt FirstFunctionRole.Arn
+{{ cookiecutter.function_name|lower }}IamRole:
+    Description: "Implicit IAM Role created for {{ cookiecutter.function_name|lower }} function"
+    Value: !GetAtt {{ cookiecutter.function_name|lower }}Role.Arn
 {%- endif %}

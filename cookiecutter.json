@@ -2,6 +2,7 @@
     "project_name": "Name of the project",
     "project_short_description": "A short description of the project",
     "function_name": "FirstFunctionNameInPascalCase",
+    "include_vscode_debugger": "y",
     "include_apigw": "y",
     "include_xray": "n",
     "include_safe_deployment": "n",

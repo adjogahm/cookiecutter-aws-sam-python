@@ -1,7 +1,12 @@
+{%- if cookiecutter.include_vscode_debugger == "y" %}
+import ptvsd
+# Enable ptvsd on 0.0.0.0 address and on port {{ env['AWS_LAMBDA_DEBUG_PORT'] or "5890" }} that we'll connect later with our IDE
+ptvsd.enable_attach(address=('0.0.0.0', {{ env['AWS_LAMBDA_DEBUG_PORT'] or "5890" }}, redirect_output=True)
+ptvsd.wait_for_attach()
+{% endif %}
 import boto3
 import json
 import os
-
 {%- if cookiecutter.include_xray == "y" %}
 from aws_xray_sdk.core import xray_recorder
 from aws_xray_sdk.core import patch_all  # Patch all supported libraries for X-Ray - More info: https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-python-patching.html

@@ -1,6 +1,6 @@
 import json
 import pytest
-from first_function import app
+from {{ cookiecutter.function_name|lower }} import app
 
 {% if cookiecutter.include_apigw == "y" %}
 @pytest.fixture()

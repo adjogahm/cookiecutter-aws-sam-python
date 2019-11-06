@@ -1,7 +1,7 @@
 {%- if cookiecutter.include_vscode_debugger == "y" %}
 import ptvsd
-# Enable ptvsd on 0.0.0.0 address and on port {{ $AWS_LAMBDA_DEBUG_PORT or "5890" }} that we'll connect later with our IDE
-ptvsd.enable_attach(address=('0.0.0.0', {{ $AWS_LAMBDA_DEBUG_PORT or "5890" }}, redirect_output=True)
+# Enable ptvsd on 0.0.0.0 address and on port {{ AWS_LAMBDA_DEBUG_PORT }} that we'll connect later with our IDE
+ptvsd.enable_attach(address=('0.0.0.0', {{ AWS_LAMBDA_DEBUG_PORT }}, redirect_output=True)
 ptvsd.wait_for_attach()
 {% endif %}
 import boto3

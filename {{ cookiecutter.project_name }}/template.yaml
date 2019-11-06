@@ -54,8 +54,7 @@ Resources:
       ComparisonOperator: GreaterThanThreshold
       Dimensions:
         - Name: Resource
-{% set variable = testing %}
-          Value: !Sub "{{ ['${' + cookiecutter.function_name + '}'] }}:live"
+          Value: !Sub "{{ '${' + cookiecutter.function_name + '}' }}:live"
         - Name: FunctionName
           Value: !Ref {{ cookiecutter.function_name }}
       EvaluationPeriods: 1

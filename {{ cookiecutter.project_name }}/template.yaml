@@ -92,7 +92,7 @@ Outputs:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/{{ cookiecutter.function_name|lower }}/argument"
 {%- endif %}
   {{ cookiecutter.function_name }}:
-    Description: "{{ cookiecutter.function_name }} Lambda Function ARN"
+    Description: "{{ cookiecutter.function_name }} Lambda function ARN"
     Value: !GetAtt {{ cookiecutter.function_name }}.Arn
 {% if cookiecutter.include_implicit_role_policy == "y"%}
   {{ cookiecutter.function_name }}IamRole:

@@ -1,0 +1,30 @@
+exclude: '^$'
+default_stages: [push]
+repos:
+- repo: https://github.com/travelex/pre-commit-hooks
+  rev: v1.0
+  hooks:
+  - id: detect-unencrypted-ansible-vault
+    exclude: '^$'
+  - id: detect-unsigned-commit
+    exclude: '^$'
+    verbose: true
+    stages: [commit]
+- repo: https://github.com/Yelp/detect-secrets
+  rev: v0.14.3
+  hooks:
+  - id: detect-secrets
+    exclude: '^$'
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v3.3.0
+  hooks:
+  - id: detect-aws-credentials
+  - id: detect-private-key
+  - id: mixed-line-ending
+  - id: check-merge-conflict
+- repo:  https://github.com/milin/giticket
+  rev: v1.1
+  hooks:
+  - id: giticket
+    args: ['--mode=regex_match', '--regex=DO-\d{4}', '--format={ticket} {commit_msg}']
+    stages: [commit-msg]
